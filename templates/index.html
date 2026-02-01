@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TaskWeb</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="header">
+      <h1>Task</h1>
+    </header>
+
+    <section class="panel">
+      <h2>New Task</h2>
+      <form action="/add" method="post" class="form">
+        <input name="title" placeholder="Task title" required />
+        <input name="due_date" type="date" required />
+        <select name="priority">
+          <option value="high">HIGH</option>
+          <option value="mid" selected>MID</option>
+          <option value="low">LOW</option>
+        </select>
+        <select name="status">
+          <option value="todo" selected>To do</option>
+          <option value="pending">Pending</option>
+          <option value="progress">In progress</option>
+          <option value="done">Done</option>
+        </select>
+        <button type="submit" class="btn">Add</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Today's Tasks</h2>
+      {% if today|length == 0 %}
+        <p class="muted">No tasks for today</p>
+      {% else %}
+        <div class="today">
+          {% for t in today %}
+            <div class="card pri-{{t.priority_raw}}" draggable="true" data-id="{{t.id}}">
+              <div class="cardTop">
+                <span class="badge pri-{{t.priority_raw}}">{{ t.priority }}</span>
+                <span class="meta">due: {{ t.due_date }} / score: {{ t.score }}</span>
+              </div>
+              <div class="title">{{ t.title }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </section>
+
+    <section class="board">
+      {% for st in ["todo","pending","progress","done"] %}
+        <div class="col">
+          <div class="colHead">
+            <div class="colTitle">
+              <span class="dot dot-{{st}}"></span>
+              {{ status_label[st] }}
+            </div>
+            <div class="count">{{ counts[st] }}</div>
+          </div>
+
+          <div class="dropzone" data-status="{{st}}">
+            {% for t in board[st] %}
+              <div class="card pri-{{t.priority_raw}}" draggable="true" data-id="{{t.id}}">
+                <div class="cardTop">
+                  <span class="badge pri-{{t.priority_raw}}">{{ t.priority }}</span>
+                  <span class="meta">#{{t.id}} / due: {{t.due_date}}</span>
+                </div>
+                <div class="title">{{ t.title }}</div>
+
+                <div class="cardActions">
+                  {% if st == "todo" %}
+                    <div class="moveBtns">
+                      <button class="mini move pending" data-move="{{t.id}}" data-to="pending">
+                        Pending
+                      </button>
+                      <button class="mini move progress" data-move="{{t.id}}" data-to="progress">
+                        In progress
+                      </button>
+                      <button class="mini move done" data-move="{{t.id}}" data-to="done">
+                        Done
+                      </button>
+                    </div>
+                  {% endif %}
+                  <button class="mini danger" data-delete="{{t.id}}">Delete</button>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

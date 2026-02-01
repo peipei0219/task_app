@@ -1,0 +1,223 @@
+:root{
+  --bg:#0b0f16;
+  --panel:#0f1622;
+  --panel2:#0c121c;
+  --border:#1d2a3a;
+  --text:#e7eefc;
+  --muted:#9fb0c6;
+}
+
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,"Hiragino Sans",sans-serif;
+}
+
+.wrap{ max-width:1400px; margin:0 auto; padding:18px; }
+.header{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:12px; }
+h1{ margin:0; font-size:24px; }
+.sub{ color:var(--muted); font-size:13px; }
+
+.panel{
+  background:linear-gradient(180deg,var(--panel),var(--panel2));
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+  margin:12px 0;
+  box-shadow:0 6px 30px rgba(0,0,0,.35);
+}
+.panel h2{ margin:0 0 10px; font-size:16px; }
+
+.form{
+  display:grid;
+  grid-template-columns: 1fr 160px 120px 160px 110px;
+  gap:10px;
+}
+input, select{
+  background:#0a111a;
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px;
+}
+input[type="date"]::-webkit-calendar-picker-indicator{
+  opacity: 1;
+  filter: invert(1) brightness(1.25);
+  cursor: pointer;
+}
+.btn{
+  background:#121d2c;
+  border:1px solid var(--border);
+  color:var(--text);
+  border-radius:12px;
+  padding:10px 12px;
+  cursor:pointer;
+}
+
+.muted{ color:var(--muted); }
+
+.board{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:12px;
+  margin-top:14px;
+}
+
+.col{
+  background:linear-gradient(180deg,#0f1622,#0b1019);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:12px;
+  min-height: 420px;
+}
+
+.colHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.colTitle{ display:flex; align-items:center; gap:8px; font-weight:700; }
+.count{
+  color:var(--muted);
+  font-size:12px;
+  border:1px solid var(--border);
+  padding:2px 8px;
+  border-radius:999px;
+}
+
+.dot{ width:10px; height:10px; border-radius:999px; display:inline-block; }
+.dot-todo{ background:#b9c6d8; }
+.dot-pending{ background:#ff5a5a; }
+.dot-progress{ background:#4aa3ff; }
+.dot-done{ background:#46d37a; }
+
+.dropzone{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  min-height: 360px;
+  padding:4px;
+  border-radius:14px;
+}
+
+.card{
+  background:rgba(6,10,16,.85);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px;
+  cursor:grab;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+  position:relative;
+}
+.card:active{ cursor:grabbing; }
+.card.dragging{ opacity:.55; }
+
+.cardTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.title{ margin-top:8px; font-weight:700; line-height:1.2; }
+.meta{ color:var(--muted); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.badge{
+  font-size:11px;
+  padding:2px 8px;
+  border-radius:999px;
+  border:1px solid var(--border);
+}
+
+.cardActions{
+  display:flex;
+  justify-content:flex-end;
+  margin-top:10px;
+}
+.mini{
+  font-size:12px;
+  background:#111a28;
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:6px 10px;
+  cursor:pointer;
+}
+.mini.danger{ border-color:#ff5a5a; }
+
+/* 優先度で色分け：左ライン + バッジ */
+.pri-3{ border-left:4px solid #ff4d4d; }
+.pri-2{ border-left:4px solid #ffd166; }
+.pri-1{ border-left:4px solid #4aa3ff; }
+
+.badge.pri-3{ color:#ff8a8a; border-color:#ff4d4d55; }
+.badge.pri-2{ color:#ffe29a; border-color:#ffd16655; }
+.badge.pri-1{ color:#9cc8ff; border-color:#4aa3ff55; }
+
+/* 今日やるべき：横並び（必要なら） */
+.today{
+  display:grid;
+  grid-template-columns: repeat(5, minmax(180px, 1fr));
+  gap:10px;
+}
+
+.field{ display:flex; flex-direction:column; gap:6px; }
+.fieldLabel{ color: var(--muted); font-size:12px; }
+
+.moveBtns{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  margin-right:8px;
+}
+.cardActions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:10px;
+}
+
+@media (max-width: 1100px){
+  .board{ grid-template-columns: repeat(2, 1fr); }
+  .today{ grid-template-columns: repeat(2, 1fr); }
+  .form{ grid-template-columns: 1fr; }
+}
+
+/* =========================
+   移動ボタン：行き先色と統一
+   ========================= */
+
+button.move{
+  font-weight:600;
+  border-width:1.5px;
+}
+
+/* Pending（赤） */
+button.move.pending{
+  color:#ff8a8a;
+  border-color:#ff5a5a;
+  background:rgba(255,90,90,.08);
+}
+button.move.pending:hover{
+  background:rgba(255,90,90,.18);
+}
+
+/* In progress（青） */
+button.move.progress{
+  color:#9cc8ff;
+  border-color:#4aa3ff;
+  background:rgba(74,163,255,.08);
+}
+button.move.progress:hover{
+  background:rgba(74,163,255,.18);
+}
+
+/* Done（緑） */
+button.move.done{
+  color:#8fe6b3;
+  border-color:#46d37a;
+  background:rgba(70,211,122,.08);
+}
+button.move.done:hover{
+  background:rgba(70,211,122,.18);
+}
