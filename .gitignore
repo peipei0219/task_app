@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environment
+.venv/
+venv/
+
+# Local database
+tasks.db
+
+# Environment variables
+.env
+
+# macOS
+.DS_Store
